@@ -4,70 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    <script type="module">
-        // Import the necessary Firebase functions
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
 
-        // Your Firebase web app configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDBn5L1eRfl4stDjfGa2_fkNQuEdpBljEA",
-            authDomain: "music-management-89bd1.firebaseapp.com",
-            projectId: "music-management-89bd1",
-            storageBucket: "music-management-89bd1.appspot.com",
-            messagingSenderId: "820301927405",
-            appId: "1:820301927405:web:3ed22ce9d68a79cb0b0de4",
-            measurementId: "G-3VJGMS8PFW",
-            databaseURL: "https://music-management-89bd1-default-rtdb.firebaseio.com/" // Ensure databaseURL is included for Realtime Database
-        };
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app); // Initialize Firebase Realtime Database
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-        function login() {
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+            <p class="error" id="errorMessage"></p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Basic validation
-            if (email === "" || password === "") {
-                alert("Please fill in all fields.");
-                return;
+            if (email === "admin@example.com" && password === "admin123") {
+                // Redirect to admin dashboard or show a success message
+                window.location.href = "admin-dashboard.html"; // Adjust as needed
+            } else {
+                // Show an error message
+                errorMessage.textContent = "Invalid email or password";
             }
-
-            // Firebase authentication
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    // Fetch members' data after successful login
-                    fetchMembersData();
-                    // Redirect to dashboard or show success message
-                    window.location.href = 'admin-dashboard.html'; // Change to your dashboard URL
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
-
-        function fetchMembersData() {
-            const membersRef = ref(db, 'members'); // Adjust to your database path
-
-            onValue(membersRef, (snapshot) => {
-                const data = snapshot.val();
-                console.log(data); // Handle/display data on the dashboard
-            });
-        }
+        });
     </script>
-</head>
-<body>
-    <h1>Admin Login</h1>
-    <input type="email" id="email" placeholder="Email" required autocomplete="email">
-    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
-    <button onclick="login()">Login</button>
 </body>
 </html>
