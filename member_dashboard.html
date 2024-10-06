@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #2C3E50;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin-right: 20px;
+        }
+
+        .navbar a:hover {
+            color: #f4f4f4;
+            background-color: #18BC9C;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .dashboard-container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2C3E50;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .sidebar a:hover {
+            background-color: #18BC9C;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .passport-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .edit-form input[type="text"], .edit-form input[type="email"], .edit-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2C3E50;
+            color: white;
+            margin-top: 40px;
+        }
+
+        /* Login message styles */
+        #login-message {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #18BC9C;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+            z-index: 9999;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeInOut 4s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            20%, 80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Successful Message -->
+<div id="login-message">
+    Login Successful! Welcome, [Member's Name]!
+</div>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">
+        <h1 style="color: white;">Member Dashboard</h1>
+    </div>
+    <div class="menu">
+        <a href="index.html">Logout</a>
+    </div>
+</div>
+
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+        <a href="#events"><i class="fas fa-calendar-alt"></i> Upcoming Events</a>
+        <a href="#messages"><i class="fas fa-comments"></i> Messages</a>
+        <a href="#settings"><i class="fas fa-cogs"></i> Settings</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Welcome, [Member's Name]!</h1>
+
+        <!-- Profile Section -->
+        <div id="profile" class="card">
+            <h2>Your Profile</h2>
+            <img src="[Passport Image URL]" alt="Passport Image" class="passport-img">
+            <p>Name: [Member's Name]</p>
+            <p>Email: [Member's Email]</p>
+            <p>Joined on: [Joining Date]</p>
+            <button onclick="toggleEditForm()">Edit Profile</button>
+
+            <!-- Edit Profile Form -->
+            <div class="edit-form">
+                <h3>Edit Profile</h3>
+                <input type="text" placeholder="Name" value="[Member's Name]" id="edit-name">
+                <input type="email" placeholder="Email" value="[Member's Email]" id="edit-email">
+                <input type="file" id="passport-upload" accept="image/*">
+                <button onclick="saveProfile()">Save Changes</button>
+                <button onclick="toggleEditForm()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Upcoming Events Section -->
+        <div id="events" class="card">
+            <h2>Upcoming Events</h2>
+            <p>Event 1: [Event Details]</p>
+            <p>Event 2: [Event Details]</p>
+            <p>Event 3: [Event Details]</p>
+        </div>
+
+        <!-- Messages Section -->
+        <div id="messages" class="card">
+            <h2>Your Messages</h2>
+            <p>No new messages.</p>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="card">
+            <h2>Settings</h2>
+            <p>Manage your account settings here.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Pst.Jamal Music Group. All rights reserved.</p>
+</footer>
+
+<script>
+    // Display the login success message for 4 seconds
+    window.onload = function() {
+        var loginMessage = document.getElementById('login-message');
+        loginMessage.style.display = 'block';
+
+        setTimeout(function() {
+            loginMessage.style.display = 'none';
+        }, 4000); // Hide message after 4 seconds
+    };
+
+    // Function to toggle the edit profile form
+    function toggleEditForm() {
+        const editForm = document.querySelector('.edit-form');
+        editForm.style.display = editForm.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Function to save profile changes (implement as needed)
+    function saveProfile() {
+        const name = document.getElementById('edit-name').value;
+        const email = document.getElementById('edit-email').value;
+        const passportUpload = document.getElementById('passport-upload').files[0];
+
+        // Implement the logic to save the profile changes
+        // You can use FormData to handle file uploads if needed.
+
+        alert("Profile updated successfully!");
+        toggleEditForm(); // Close the edit form
+    }
+</script>
+
+</body>
+</html>
