@@ -6,55 +6,30 @@
     <title>Admin Login</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script> <!-- Include Firebase Database -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        input {
-            margin: 10px 0;
-            padding: 10px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-    <script>
-        // Your Firebase configuration
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+
+    <script type="module">
+        // Import the necessary Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        // Your Firebase web app configuration
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDBn5L1eRfl4stDjfGa2_fkNQuEdpBljEA",
+            authDomain: "music-management-89bd1.firebaseapp.com",
+            projectId: "music-management-89bd1",
+            storageBucket: "music-management-89bd1.appspot.com",
+            messagingSenderId: "820301927405",
+            appId: "1:820301927405:web:3ed22ce9d68a79cb0b0de4",
+            measurementId: "G-3VJGMS8PFW",
+            databaseURL: "https://music-management-89bd1-default-rtdb.firebaseio.com/" // Ensure databaseURL is included for Realtime Database
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database(); // Initialize database
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app); // Initialize Firebase Realtime Database
 
         function login() {
             const email = document.getElementById('email').value;
@@ -66,7 +41,8 @@
                 return;
             }
 
-            auth.signInWithEmailAndPassword(email, password)
+            // Firebase authentication
+            signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     // Fetch members' data after successful login
                     fetchMembersData();
@@ -83,7 +59,7 @@
 
             onValue(membersRef, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data); // Do something with the data, e.g., display it on the dashboard
+                console.log(data); // Handle/display data on the dashboard
             });
         }
     </script>
