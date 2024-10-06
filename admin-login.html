@@ -6,6 +6,7 @@
     <title>Admin Login</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script> <!-- Include Firebase Database -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,18 +43,18 @@
     <script>
         // Your Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDBn5L1eRfl4stDjfGa2_fkNQuEdpBljEA",
-            authDomain: "music-management-89bd1.firebaseapp.com",
-            projectId: "music-management-89bd1",
-            storageBucket: "music-management-89bd1.appspot.com",
-            messagingSenderId: "820301927405",
-            appId: "1:820301927405:web:3ed22ce9d68a79cb0b0de4",
-            measurementId: "G-3VJGMS8PFW"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = firebase.auth(); // This needs to be changed to the new SDK import.
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database(); // Initialize database
 
         function login() {
             const email = document.getElementById('email').value;
@@ -67,6 +68,8 @@
 
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
+                    // Fetch members' data after successful login
+                    fetchMembersData();
                     // Redirect to dashboard or show success message
                     window.location.href = 'admin-dashboard.html'; // Change to your dashboard URL
                 })
@@ -74,12 +77,21 @@
                     alert(error.message);
                 });
         }
+
+        function fetchMembersData() {
+            const membersRef = ref(db, 'members'); // Adjust to your database path
+
+            onValue(membersRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log(data); // Do something with the data, e.g., display it on the dashboard
+            });
+        }
     </script>
 </head>
 <body>
     <h1>Admin Login</h1>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Password" required>
+    <input type="email" id="email" placeholder="Email" required autocomplete="email">
+    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
     <button onclick="login()">Login</button>
 </body>
 </html>
