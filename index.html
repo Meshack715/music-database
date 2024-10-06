@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
-<script>
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-</script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,11 +53,12 @@
             align-items: center;
         }
 
-        .login-icons i {
+        .login-icons a {
             color: white;
             font-size: 1.5em;
             margin-left: 20px;
             cursor: pointer;
+            text-decoration: none;
         }
 
         /* Hamburger menu styling */
@@ -134,86 +135,50 @@
             display: block;
         }
 
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 400px;
-            margin: 100px auto;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.5s;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .modal h2 {
-            margin-bottom: 20px;
-        }
-
-        .modal form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal input {
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1.1em;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .modal button {
-            padding: 10px;
-            background-color: #18BC9C;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .modal button:hover {
-            background-color: #16A085;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
         footer {
             text-align: center;
             padding: 20px;
             background-color: #2C3E50;
             color: white;
             margin-top: 40px;
+        }
+
+        /* Profile Modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.7); 
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 400px; 
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         /* Media Queries for Responsive Design */
@@ -249,29 +214,6 @@
                 border-bottom: 1px solid #18BC9C;
             }
         }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 80px 10px;
-            }
-
-            .main-content h1 {
-                font-size: 2em;
-            }
-
-            .main-content p {
-                font-size: 1em;
-            }
-
-            .btn {
-                padding: 8px 15px;
-                font-size: 0.9em;
-            }
-
-            .slider-container {
-                max-width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -288,88 +230,10 @@
         <a href="#features">Features</a>
     </div>
     <div class="login-icons">
-        <i class="fas fa-user-tie" onclick="openModal('adminModal')"></i>
-        <i class="fas fa-user" onclick="openModal('memberModal')"></i>
+        <a onclick="openModal('admin')"><i class="fas fa-user-tie"></i></a>
+        <a onclick="openModal('member')"><i class="fas fa-user"></i></a>
     </div>
 </div>
-
-<!-- Admin Modal -->
-<div id="adminModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('adminModal')">&times;</span>
-        <h2>Admin Login</h2>
-        <form id="adminLoginForm">
-            <input type="text" id="adminUsername" placeholder="Username" required>
-            <input type="password" id="adminPassword" placeholder="Password" required>
-            <button type="button" onclick="adminLogin()">Login</button>
-        </form>
-        <p id="adminLoginError" style="color:red; display:none;">Invalid admin credentials. Please try again.</p>
-    </div>
-</div>
-
-<!-- Member Modal -->
-<div id="memberModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('memberModal')">&times;</span>
-        <h2>Member Login</h2>
-        <form id="memberLoginForm">
-            <input type="text" id="memberUsername" placeholder="Username" required>
-            <input type="password" id="memberPassword" placeholder="Password" required>
-            <button type="button" onclick="memberLogin()">Login</button>
-        </form>
-        <p id="memberLoginError" style="color:red; display:none;">Invalid member credentials. Please try again.</p>
-    </div>
-</div>
-
-<script>
-    // Sample admin and member data (can be extended to use databases)
-    const admins = [
-        { username: "admin1", password: "password123" },
-        { username: "admin2", password: "adminpass" }
-    ];
-
-    const members = [
-        { username: "member1", password: "mypass1" },
-        { username: "member2", password: "mypass2" }
-    ];
-
- // Admin login validation
-function adminLogin() {
-    const adminUsername = document.getElementById('adminUsername').value;
-    const adminPassword = document.getElementById('adminPassword').value;
-    const error = document.getElementById('adminLoginError');
-    error.style.display = 'none'; // Reset error display
-
-    const isValidAdmin = admins.some(admin => admin.username === adminUsername && admin.password === adminPassword);
-
-    if (isValidAdmin) {
-        // Redirect to admin dashboard
-        window.location.href = "admin_dashboard.html"; // Replace with the actual path of your admin dashboard page
-    } else {
-        error.style.display = 'block';
-    }
-}
-
-// Member login validation
-function memberLogin() {
-    const memberUsername = document.getElementById('memberUsername').value;
-    const memberPassword = document.getElementById('memberPassword').value;
-    const error = document.getElementById('memberLoginError');
-    error.style.display = 'none'; // Reset error display
-
-    const isValidMember = members.some(member => member.username === memberUsername && member.password === memberPassword);
-
-    if (isValidMember) {
-        // Redirect to member area
-        window.location.href = "member_dashboard.html"; // Replace with the actual path of your member area page
-    } else {
-        error.style.display = 'block';
-    }
-}
-
-
-</script>
-
 
 <!-- Main Content -->
 <div class="main-content">
@@ -385,6 +249,15 @@ function memberLogin() {
     <a href="#features" class="btn">Explore Features</a>
 </div>
 
+<!-- Profile Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="modal-message"></p>
+        <button class="btn" id="proceed-button" onclick="proceed()">Proceed</button>
+    </div>
+</div>
+
 <footer>
     <p>&copy; 2024 Pst.Jamal Music Group. All rights reserved.</p>
 </footer>
@@ -396,32 +269,53 @@ function memberLogin() {
         menu.classList.toggle('show');
     }
 
-    // Open Modal
-    function openModal(modalId) {
-        document.getElementById(modalId).style.display = 'block';
-    }
+    // Open modal for profile selection
+    function openModal(type) {
+        const modal = document.getElementById('myModal');
+        const message = document.getElementById('modal-message');
+        const proceedButton = document.getElementById('proceed-button');
 
-    // Close Modal
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    // Slider functionality
-    let slideIndex = 0;
-    const slides = document.querySelectorAll('.slider-container img');
-    
-    function showSlides() {
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].classList.remove('active');
+        if (type === 'admin') {
+            message.textContent = 'Proceed to Admin Page';
+            proceedButton.onclick = function() { 
+                closeModal(); // Close the modal before navigating
+                window.location.href = 'admin-login.html'; 
+            };
+        } else if (type === 'member') {
+            message.textContent = 'Proceed to Member Page';
+            proceedButton.onclick = function() { 
+                closeModal(); // Close the modal before navigating
+                window.location.href = 'member-profile.html'; 
+            };
         }
-        slideIndex++;
-        if (slideIndex > slides.length) { slideIndex = 1 }
-        slides[slideIndex - 1].classList.add('active');
-        setTimeout(showSlides, 5000); // Change slide every 5 seconds
-    }
-    
-    showSlides();
-</script>
 
+        modal.style.display = 'block';
+    }
+
+    // Close the modal
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    // Handle clicks outside the modal to close it
+    window.onclick = function(event) {
+        const modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Image Slider Logic
+    const sliderImages = document.querySelectorAll('.slider-container img');
+    let currentImageIndex = 0;
+
+    function showNextImage() {
+        sliderImages[currentImageIndex].classList.remove('active');
+        currentImageIndex = (currentImageIndex + 1) % sliderImages.length;
+        sliderImages[currentImageIndex].classList.add('active');
+    }
+
+    setInterval(showNextImage, 3000); // Change image every 3 seconds
+</script>
 </body>
 </html>
