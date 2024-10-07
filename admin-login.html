@@ -71,7 +71,25 @@
         </form>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+
     <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4sHxhGfZB7cOr1UWpFPleigFNLL3xGoc",
+            authDomain: "admin-login-a330c.firebaseapp.com",
+            projectId: "admin-login-a330c",
+            storageBucket: "admin-login-a330c.appspot.com",
+            messagingSenderId: "497280106059",
+            appId: "1:497280106059:web:3d3b342c6b963da7bcd7ce"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Handle form submission
         const form = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
 
@@ -81,13 +99,16 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            if (email === "admin@example.com" && password === "admin123") {
-                // Redirect to admin dashboard or show a success message
-                window.location.href = "admin-dashboard.html"; // Adjust as needed
-            } else {
-                // Show an error message
-                errorMessage.textContent = "Invalid email or password";
-            }
+            // Firebase authentication login
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Redirect to admin dashboard
+                    window.location.href = "admin-dashboard.html";  // Adjust as needed
+                })
+                .catch((error) => {
+                    // Show error message
+                    errorMessage.textContent = "Invalid email or password. " + error.message;
+                });
         });
     </script>
 </body>
